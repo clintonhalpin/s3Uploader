@@ -1,0 +1,16 @@
+{
+  "name": "boilerplate",
+  "version": "0.0.0",
+  "authors": [
+    "Clinton Halpin <clintonhalpin@gmail.com>"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "angular": "~1.2.24",
+    "angular-ui-router": "~0.2.11"
+  },
+  "dependencies": {
+    "ng-file-upload": "~3.2.4",
+    "basscss": "~5.0.1"
+  }
+}

@@ -1,0 +1,18 @@
+@import '../bower_components/basscss/scss/defaults';
+@import '../bower_components/basscss/scss/base-buttons';
+@import '../bower_components/basscss/scss/base-reset';
+@import '../bower_components/basscss/scss/base-forms';
+@import '../bower_components/basscss/scss/button-blue';
+@import '../bower_components/basscss/scss/utility-white-space';
+@import '../bower_components/basscss/scss/utility-layout';
+
+body {
+  background: #5D5D5D;
+  color: white;
+  margin: 40px;
+}
+
+button {
+	background: #11DDEE;
+	padding: 20px 0;
+}
