@@ -5,4 +5,3 @@ src/bower_components
 .DS_Store
 dist
 npm-debug.log
-.env.development.js
