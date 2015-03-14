@@ -8,6 +8,11 @@ module.exports = function($scope, TestFactory, $upload) {
 			url: '/',
 			method: 'POST',
 			file: files
-		});
+		}).success(function(data, status, headers, config) {
+           console.log(data);
+           console.log(status);
+           console.log(headers);
+           console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+        });
     };
 }
