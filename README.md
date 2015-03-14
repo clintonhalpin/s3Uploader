@@ -1,5 +1,5 @@
-# Boilerplate ( Angular )
-Just some boilerplate code that I don't like to write all the time.
+# s3Uploader  
+Use Angular, Express, to upload to s3
 
 ### Getting started
 ```

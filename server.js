@@ -20,6 +20,14 @@ app.engine('jade', jade.__express);
 app.get('/', require('./api/routes/index'))
 app.post('/', multipartyMiddleware, require('./api/routes/upload'));
 
-http.createServer(app).listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port'));
-});
+//http.createServer(app).listen(app.get('port'), function() {
+//    console.log('Express server listening on port ' + app.get('port'));
+//});
+
+if(require.main === module) {
+    app.listen(app.get('port'), function() {
+        console.log('Server started @ localhost:' + app.get('port'));
+    })
+} else {
+    module.exports === app
+}
