@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.engine('jade', jade.__express);
 
 app.get('/', require('./api/routes/index'))
-app.post('/', multipartyMiddleware, require('./api/routes/upload'));
+app.post('/api/upload', multipartyMiddleware, require('./api/routes/upload'));
 
 //http.createServer(app).listen(app.get('port'), function() {
 //    console.log('Express server listening on port ' + app.get('port'));

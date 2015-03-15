@@ -1,16 +1,10 @@
 <h1>Upload a file pal:</h1>
 
-
-
 <form name="uploader">
-	    <input class="block" type="file" ng-file-select="" ng-model="picFile" name="file" accept="image/*">
+	    <input class="block" type="file" ng-file-select="" ng-model="picFile" name="file" accept="image/*" multiple="multiple">
 		<button class="button button-blue mt2" ng-click="upload(picFile)">Submit</button>
 </form>
 
-<!-- 
+<img class="mt2" ng-src="https://s3-us-west-2.amazonaws.com/clintonbucket/{{ image }}">
 
-<img ng-show="picFile[0].dataUrl != null" ng-src="" class="thumb ng-hide">
-		<span class="progress ng-hide" ng-show="picFile[0].progress >= 0">		
-			<div style="width:%" ng-bind="picFile[0].progress + '%'" class="ng-binding">%</div>
-		</span>	
-		<span ng-show="picFile[0].result" class="ng-hide">Upload Successful</span> -->
+<p>{{ image }}</p>
