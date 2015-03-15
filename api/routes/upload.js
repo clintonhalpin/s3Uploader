@@ -7,7 +7,7 @@ var fs = require('fs')
 var knox = require('knox')
 var s3 = require('s3')
 
-var url = 'https://s3-us-west-2.amazonaws.com/' + config.AWS.bucketName;
+var url = 'https://s3-us-west-2.amazonaws.com/' + config.AWS.bucketName + '/';
 
 module.exports = function(req, res) {
 
@@ -22,16 +22,14 @@ module.exports = function(req, res) {
     if(files.length === undefined) {
         var file = req.files.file;
         client.putFile(file.path, file.name, function(err, data) {
-            res.send(url + file.name)
+            res.send([url + file.name])
         });
     } else {
        var files = req.files.file;
        var result = [];
        for(var i = 0; i < files.length; i++) {
-            var file = files[i];
-            console.log('looped');
-            client.putFile(file.path, file.name, function(err, data) {
-                result.push(url + file.name)
+            client.putFile(files[i].path, files[i].name, function(err, data) {
+                result.push(url + files[i].name);
                 if (result.length === files.length) {
                     res.send(result)
                 }
