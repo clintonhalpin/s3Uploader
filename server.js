@@ -28,5 +28,5 @@ if(require.main === module) {
         console.log('Server started @ localhost:' + app.get('port'));
     })
 } else {
-    module.exports === app
+    module.exports = app
 }

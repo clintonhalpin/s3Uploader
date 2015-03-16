@@ -12,8 +12,10 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     transform = require('vinyl-transform'),
     sourcemaps = require('gulp-sourcemaps'),
+    server = require('./server'),
     port = 4000,
     lrport = 9088;
+
 
 var onError = function(err) {
     console.error(err.message);
@@ -29,10 +31,10 @@ function notifyLiveReload(event) {
 }
 
 gulp.task('express', function() {
-  var app = express();
-  app.use(connectLivereload({port: lrport}));
-  app.use(express.static(__dirname + '/dist'));
-  app.listen(port);
+  server.use(connectLivereload({port: lrport}));
+  server.listen(port, function() {
+    console.log('Server started @ localhost:' + port);
+  })
 });
 
 gulp.task('livereload', function() {
