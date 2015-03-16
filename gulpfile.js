@@ -108,3 +108,7 @@ gulp.task('dist', ['sass', 'mv-html', 'javascript'], function() {
 gulp.task('default', ['express', 'livereload', 'watch'], function() {
   console.log("Running @ http://localhost:" + port);
 });
+
+gulp.task('fe', ['watch'], function() {
+  console.log("Watching Front end");
+});
