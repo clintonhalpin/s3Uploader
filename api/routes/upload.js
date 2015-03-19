@@ -16,17 +16,33 @@ module.exports = function(req, res) {
         secret: config.AWS.AWS_SECRET_ACCESS_KEY,
         bucket: config.AWS.bucketName
     });
+
+    function replaceSpace(name) {
+        return name.replace(/ /g, '_');
+    }
     
     var files = req.files.file;
 
     if(files.length === undefined) {
         var file = req.files.file;
-        client.putFile(file.path, file.name, function(err, data) {
-            if(err) {
-                console.log(err);
-            }
-            res.send([url + file.name])
+        var stream = fs.createReadStream(file.path);
+        var headers = {
+            'Content-Length': file.size,
+            'Content-Type': file.type 
+        };
+
+        var req = client.putStream(stream, replaceSpace(file.name), headers, function(err, result){
+            if (err) throw err;
         });
+
+        req.on('progress', function(data) {
+            console.log('File:' + data.percent + '%');
+        })
+
+        req.on('response', function(data) {
+            res.send([req.url]);
+        })
+
     } else {
         var files = req.files.file;
         var result = [];
@@ -40,7 +56,7 @@ module.exports = function(req, res) {
                 'Content-Type': file.type 
             };
 
-            var req = client.putStream(stream, file.name, headers, function(err, result){
+            var req = client.putStream(stream, replaceSpace(file.name), headers, function(err, result){
                 if (err) throw err;
             });
 
