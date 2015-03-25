@@ -17,24 +17,41 @@ module.exports = function(req, res) {
         secret: config.AWS.AWS_SECRET_ACCESS_KEY,
         bucket: config.AWS.bucketName
     });
-    
+
+    function replaceSpace(name) {
+        return name.replace(/ /g, '_');
+    }
+
+    function deleteFile(file) {
+        fs.unlink(file.path, function (err) {
+            if (err) throw err;
+            console.log('successfully deleted ' + file.path);
+        });
+    }
+
     var files = req.files.file;
 
-    console.log(files);
 
     if(files.length === undefined) {
         var file = req.files.file;
-        client.putFile(file.path, file.name, function(err, data) {
-            if(err) {
-                console.log(err);
-            }
-            res.send([url + file.name])
+        var stream = fs.createReadStream(file.path);
+        var headers = {
+            'Content-Length': file.size,
+            'Content-Type': file.type 
+        };
+
+        var req = client.putStream(stream, replaceSpace(file.name), headers, function(err, result){
+            if (err) throw err;
         });
 
-        fs.unlink(file.path, function (err) {
-          if (err) throw err;
-          console.log('successfully deleted ' + file.path);
-        });
+        req.on('progress', function(data) {
+            console.log('File:' + data.percent + '%');
+        })
+
+        req.on('response', function(data) {
+            res.send([req.url]);
+            deleteFile(file);
+        })
 
     } else {
         var files = req.files.file;
@@ -49,7 +66,7 @@ module.exports = function(req, res) {
                 'Content-Type': file.type 
             };
 
-            var req = client.putStream(stream, file.name, headers, function(err, result){
+            var req = client.putStream(stream, replaceSpace(file.name), headers, function(err, result){
                 if (err) throw err;
             });
 
@@ -60,11 +77,7 @@ module.exports = function(req, res) {
             req.on('response', function(data) {
                 result.push(req.url)
                 console.log(req.url);
-
-                fs.unlink(file.path, function (err) {
-                  if (err) throw err;
-                  console.log('successfully deleted ' + file.path);
-                });
+                deleteFile(file);
 
                 if(result.length === files.length) {
                     res.send(result);
