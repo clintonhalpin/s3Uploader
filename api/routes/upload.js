@@ -1,6 +1,7 @@
 /*
  * POST /upload 
  */
+
 var config = require('./../../.env.development.js');
 var _ = require('underscore')
 var fs = require('fs')
@@ -19,6 +20,8 @@ module.exports = function(req, res) {
     
     var files = req.files.file;
 
+    console.log(files);
+
     if(files.length === undefined) {
         var file = req.files.file;
         client.putFile(file.path, file.name, function(err, data) {
@@ -27,6 +30,12 @@ module.exports = function(req, res) {
             }
             res.send([url + file.name])
         });
+
+        fs.unlink(file.path, function (err) {
+          if (err) throw err;
+          console.log('successfully deleted ' + file.path);
+        });
+
     } else {
         var files = req.files.file;
         var result = [];
@@ -51,6 +60,12 @@ module.exports = function(req, res) {
             req.on('response', function(data) {
                 result.push(req.url)
                 console.log(req.url);
+
+                fs.unlink(file.path, function (err) {
+                  if (err) throw err;
+                  console.log('successfully deleted ' + file.path);
+                });
+
                 if(result.length === files.length) {
                     res.send(result);
                 }
